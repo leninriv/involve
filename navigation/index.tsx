@@ -6,10 +6,13 @@ import { ColorSchemeName } from 'react-native';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
-import LinkingConfiguration from './LinkingConfiguration';
 
-// If you are not familiar with React Navigation, we recommend going through the
-// "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
+import ListScreen from '../screens/ListScreen';
+
+import LinkingConfiguration from './LinkingConfiguration';
+import CameraScreen from '../screens/CameraScreen';
+import ViewImageScreen from '../screens/ViewImageScreen';
+
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -27,7 +30,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
+      <Stack.Screen name="ListScreen" component={ListScreen} />
+      <Stack.Screen name="CameraScreen" component={CameraScreen} />
+      <Stack.Screen name="ViewImageScreen" component={ViewImageScreen} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
