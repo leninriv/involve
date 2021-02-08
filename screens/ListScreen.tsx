@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import Header from '../components/Header';
 import { Button } from 'react-native-paper';
+import FabButton from '../components/FabButton';
 
 import { Text, View } from '../components/Themed';
 
@@ -14,6 +15,7 @@ export default function ListScreen() {
             <Text style={styles.title}>ListScreen</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <Button icon="camera" mode="contained" onPress={() => {navigation.navigate('ViewImageScreen')}}> Navegar a la vista </Button>
+            <FabButton/>
         </View>
     );
 }
