@@ -17,7 +17,7 @@ const FabButton = () => {
           actions={[
             {
               icon: 'star',
-              label: 'Resiclar',
+              label: 'Reciclar',
               onPress: () => console.log('Pressed star'),
             },
             {
