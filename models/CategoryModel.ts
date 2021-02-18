@@ -1,17 +1,20 @@
 export default class CategoryModel {
-    id: BigInt;
+    id: Number;
     name: string;
     description: string;
+    icon: string;
 
     /**
      * Category constructor
-     * @param {BigInt} id
+     * @param {Number} id
      * @param {string} name
      * @param {string} description
+     * @param {string} icon
      */
-    constructor(id: BigInt, name: string, description: string) {
+    constructor(id: Number, name: string, description: string, icon: string) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.icon = icon;
     }
 }

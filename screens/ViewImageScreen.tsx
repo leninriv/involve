@@ -5,6 +5,7 @@ import Header from '../components/Header';
 
 
 import { Text, View } from '../components/Themed';
+import { Button } from 'react-native-paper';
 
 export default function ViewImageScreen(props: any) {
   const navigation = useNavigation();
@@ -22,6 +23,11 @@ export default function ViewImageScreen(props: any) {
           source={{ uri: photo.uri }}
           resizeMethod={'resize'}
         />}
+      <Text style={styles.title}>ViewImageScreen</Text>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Button onPress={()=> {
+        navigation.navigate('CreateReportScreen');
+      }}></Button>
     </View>
   );
 }

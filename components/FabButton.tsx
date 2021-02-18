@@ -1,7 +1,8 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { FAB, Portal, Provider } from 'react-native-paper';
 
-const FabButton = () => {
+const FabButton = (props) => {
   const [state, setState] = React.useState({ open: false });
 
   const onStateChange = ({ open }) => setState({ open });
@@ -13,25 +14,8 @@ const FabButton = () => {
       <Portal>
         <FAB.Group
           open={open}
-          icon={open ? 'plus' : 'plus'}
-          actions={[
-            {
-              icon: 'star',
-              label: 'Reciclar',
-              onPress: () => console.log('Pressed star'),
-            },
-            {
-              icon: 'email',
-              label: 'Reforestar',
-              onPress: () => console.log('Pressed email'),
-            },
-            {
-              icon: 'bell',
-              label: 'Desechos',
-              onPress: () => console.log('Pressed notifications'),
-              small: false,
-            },
-          ]}
+          icon={open ? 'close' : 'camera'}
+          actions={props.actions}
           onStateChange={onStateChange}
           onPress={() => {
             if (open) {
@@ -43,5 +27,9 @@ const FabButton = () => {
     </Provider>
   );
 };
+
+FabButton.propTypes = {
+  actions: PropTypes.array.isRequired,
+}
 
 export default FabButton;

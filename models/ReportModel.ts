@@ -1,21 +1,21 @@
 export default class CategoryModel {
-    id: BigInt;
+    id: Number;
     place: string;
-    latitude: string;
-    longitude: string;
+    latitude: Number;
+    longitude: Number;
     comment: string;
     categoryName: string;
-    categoryId: BigInt;
+    categoryId: Number;
     itemName: string;
-    itemId: BigInt;
+    itemId: Number;
 
     /**
      * Report constructor
-     * @param {BigInt} id
+     * @param {Number} id
      * @param {string} place
      * @param {string} latitude
      */
-    constructor(id: BigInt, place: string, latitude: string, longitude: string, comment: string, categoryName: string, categoryId: BigInt, itemName: string, itemId: BigInt) {
+    constructor(id: Number, place: string, latitude: Number, longitude: Number, comment: string, categoryName: string, categoryId: Number, itemName: string, itemId: Number) {
         this.id = id;
         this.place = place;
         this.latitude = latitude;
