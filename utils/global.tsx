@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImageManipulator from 'expo-image-manipulator';
 import CategoryItemModel from '../models/CategoryItemModel';
 import CategoryModel from '../models/CategoryModel';
 
@@ -33,3 +34,13 @@ export const getItemsByCategory = async (categoryId: Number) => {
 export const getReports = async () => {
     return JSON.parse(await AsyncStorage.getItem('reports') || '[]')
 };
+
+/**
+ * Returns a base64 from an image uri
+ * @param uri
+ */
+export const generateBase64 = async (uri: string) => {
+    const compressedImage = await ImageManipulator.manipulateAsync(uri, [],
+        { format: ImageManipulator.SaveFormat.JPEG, base64: true });
+    return `data:image/jpeg;base64,${compressedImage.base64}`;
+}
