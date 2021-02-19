@@ -41,6 +41,6 @@ export const getReports = async () => {
  */
 export const generateBase64 = async (uri: string) => {
     const compressedImage = await ImageManipulator.manipulateAsync(uri, [],
-        { format: ImageManipulator.SaveFormat.JPEG, base64: true });
+        { format: ImageManipulator.SaveFormat.JPEG, base64: true, compress: 0.1 });
     return `data:image/jpeg;base64,${compressedImage.base64}`;
 }

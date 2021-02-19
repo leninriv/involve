@@ -8,7 +8,6 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 
 import ListScreen from '../screens/ListScreen';
-
 import LinkingConfiguration from './LinkingConfiguration';
 import CameraScreen from '../screens/CameraScreen';
 import ViewImageScreen from '../screens/ViewImageScreen';

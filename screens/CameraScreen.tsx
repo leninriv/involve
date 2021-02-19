@@ -5,18 +5,13 @@ import { Camera } from 'expo-camera';
 import ViewShot from "react-native-view-shot";
 import DraggableImage from '../components/DraggableImage';
 
-const itemsSource = [
-  { source: require('../assets/images/opciones/ref1.png') },
-  { source: require('../assets/images/opciones/ref2.png') },
-  { source: require('../assets/images/opciones/ref3.png') }
-]
-
-
-export default function CameraScreen() {
+export default function CameraScreen(props: any) {
   const [hasPermission, setHasPermission] = useState(null);
   const [taking, setTaking] = useState(false);
   const [settingItem, setItemSetting] = useState(false);
   const [itemsView, setItemsView] = useState([]);
+  const [category, setCategory] = useState(null);
+  const [itemsSource, setItemsSource] = useState([]);
   const [photoData, setPhoto] = useState(null);
   let camera: any = useRef();
   let viewShot: any = useRef();
@@ -26,6 +21,9 @@ export default function CameraScreen() {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
+      const { items, category } = props?.route?.params;
+      setItemsSource(items);
+      setCategory(category);
     })();
   }, []);
 
@@ -68,7 +66,7 @@ export default function CameraScreen() {
   async function captureView() {
     setTimeout(async () => {
       const uri = await viewShot.capture();
-      navigation.navigate('ViewImageScreen', { photo: { uri: uri } });
+      navigation.navigate('ViewImageScreen', { photo: { uri: uri }, items: itemsView, category });
       setTaking(false);
     }, 500);
     setTimeout(() => {
@@ -93,7 +91,7 @@ export default function CameraScreen() {
             </Camera>
             <View style={styles.optionsContent}>
               {
-                itemsSource.map((buttonItem, index) =>
+                itemsSource?.map((buttonItem, index) =>
                   <TouchableOpacity key={index} style={styles.itemContent} onPress={() => { addNewItem(buttonItem) }}>
                     <Image style={{ width: 50, height: 50 }} source={buttonItem.source} />
                   </TouchableOpacity>

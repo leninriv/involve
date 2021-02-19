@@ -6,23 +6,25 @@ import FabButton from '../components/FabButton';
 import { List } from 'react-native-paper';
 
 import { View } from '../components/Themed';
-import { getCategories, getItemsByCategory } from '../utils/global';
+import { getCategories, getItemsByCategory, getReports } from '../utils/global';
 import CategoryModel from '../models/CategoryModel';
+import ReportModel from '../models/ReportModel';
 
-export default function ListScreen() {
+export default function ListScreen(props: any) {
     const navigation = useNavigation();
     const [categories, setCategories] = React.useState([]);
     const [actions, setActions] = React.useState([]);
+    const [reports, setReports] = React.useState([]);
 
     React.useEffect(() => {
         const getLocalCatalogs = async () => {
             setCategories(await getCategories());
+            setReports(await getReports())
         };
         getLocalCatalogs();
     }, []);
 
     React.useEffect(() => {
-        console.log('useEffect categories', categories);
         if (categories?.length > 0) {
             const formattedActions = categories.map((category: CategoryModel) => {
                 return {
@@ -39,9 +41,19 @@ export default function ListScreen() {
 
     }, [categories]);
 
+    React.useEffect(() => {
+        if (props?.route?.params?.reports?.length) {
+            setReports(props.route.params.reports)
+        }
+    }, [props?.route?.params?.reports]);
+
     const _onCategoryPress = async (category: CategoryModel) => {
         const categoryItems = await getItemsByCategory(category.id);
-        navigation.navigate('CameraScreen', { items: categoryItems, category })
+        navigation.navigate('CameraScreen', { items: categoryItems, category });
+    };
+
+    const _viewReport = async (report: ReportModel) => {
+        navigation.navigate('ViewImageScreen', { selectedReport: report });
     };
 
     return (
@@ -51,8 +63,11 @@ export default function ListScreen() {
             <List.AccordionGroup>
                 {!!categories?.length && categories.map((category: CategoryModel) => (
                     <List.Accordion key={category.id} title={category.name} id={category.id} left={props => <List.Icon {...props} icon={category.icon} />}>
-                        <List.Item title="Item 1" />
-                    </List.Accordion>)
+                        {reports.filter((report: ReportModel) => report.categoryId === category.id).map((report: ReportModel) => (
+                            <List.Item key={report.id} title={report.place} description={report.comment} onPress={() => { _viewReport(report) }} />
+                        ))}
+                    </List.Accordion>
+                )
                 )}
             </List.AccordionGroup>
 
