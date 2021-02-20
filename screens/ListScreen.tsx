@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import Header from '../components/Header';
 import FabButton from '../components/FabButton';
 import { FAB } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { View } from '../components/Themed';
 import { getCategories, getItemsByCategory, getReports } from '../utils/global';
@@ -25,6 +26,11 @@ export default function ListScreen(props: any) {
 
     React.useEffect(() => {
         const getLocalCatalogs = async () => {
+            // Remove reports from local storage
+            // await AsyncStorage.removeItem('reports');
+            // await AsyncStorage.removeItem('items');
+            // await AsyncStorage.removeItem('categories');
+
             setCategories(await getCategories());
             setReports(await getReports())
         };
@@ -41,6 +47,7 @@ export default function ListScreen(props: any) {
                         await _onCategoryPress(category);
                     },
                     small: false,
+                    color: colors.lightGreen,
                 }
             });
             setActions(formattedActions);
@@ -96,6 +103,7 @@ export default function ListScreen(props: any) {
                             style={styles.fab}
                             small
                             icon="camera"
+                            color={colors.darkBlue}
                         />
                     </View>
 
@@ -159,6 +167,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         padding: 5,
         marginTop: 40,
+        backgroundColor: colors.lightGreen
     },
     logoImage: {
         marginTop: 20,
