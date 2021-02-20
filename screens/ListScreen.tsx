@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import FabButton from '../components/FabButton';
 import { List } from 'react-native-paper';
@@ -9,6 +9,9 @@ import { View } from '../components/Themed';
 import { getCategories, getItemsByCategory, getReports } from '../utils/global';
 import CategoryModel from '../models/CategoryModel';
 import ReportModel from '../models/ReportModel';
+import ReportItem from '../components/ReportItem';
+import EmptyListMessage from '../components/EmptyListMessage';
+
 
 export default function ListScreen(props: any) {
     const navigation = useNavigation();
@@ -60,7 +63,19 @@ export default function ListScreen(props: any) {
         <View style={styles.container}>
             <Header title='Mis Reportes' showBack={false} />
 
-            <List.AccordionGroup>
+            <ScrollView style={{ flex: 1 }}>
+                {
+                    !!reports && reports.length > 0 ?
+                        reports.map((report, index) => <ReportItem key={index} report={report} onPress={() => { _viewReport(report) }} />)
+                        :
+                        <EmptyListMessage />
+                }
+                <View style={{ height: 20 }} />
+            </ScrollView>
+
+
+
+            {/* <List.AccordionGroup>
                 {!!categories?.length && categories.map((category: CategoryModel) => (
                     <List.Accordion key={category.id} title={category.name} id={category.id} left={props => <List.Icon {...props} icon={category.icon} />}>
                         {reports.filter((report: ReportModel) => report.categoryId === category.id).map((report: ReportModel) => (
@@ -69,9 +84,9 @@ export default function ListScreen(props: any) {
                     </List.Accordion>
                 )
                 )}
-            </List.AccordionGroup>
+            </List.AccordionGroup> */}
 
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
             <FabButton actions={actions} />
         </View>
     );
