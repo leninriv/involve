@@ -57,7 +57,7 @@ export default function ListScreen(props: any) {
 
     React.useEffect(() => {
         if (props?.route?.params?.reports?.length) {
-            setReports(props.route.params.reports)
+            setReports(props.route.params.reports);
         }
     }, [props?.route?.params?.reports]);
 

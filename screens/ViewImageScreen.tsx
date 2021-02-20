@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import { View } from '../components/Themed';
 import { Button, TextInput } from 'react-native-paper';
@@ -8,6 +8,8 @@ import * as Location from 'expo-location';
 import { generateBase64, getReports } from '../utils/global';
 import ReportModel from '../models/ReportModel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from 'react-native-modal';
+import { colors } from '../utils/colors';
 
 export default function ViewImageScreen(props: any) {
   const navigation = useNavigation();
@@ -20,11 +22,13 @@ export default function ViewImageScreen(props: any) {
   const [items, setItems] = React.useState([]);
   const [isDisabled, setIsDisabled] = React.useState(false);
   const [selectedReport, setSelectedReport] = React.useState(null);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [reports, setReports] = React.useState([]);
 
   React.useEffect(() => {
     (async () => {
       const { items, category, selectedReport } = props?.route?.params;
-      
+
       // Disable inputs if report received
       if (selectedReport) {
         setSelectedReport(selectedReport);
@@ -63,8 +67,14 @@ export default function ViewImageScreen(props: any) {
       await generateBase64(photo.uri),
     ));
     await AsyncStorage.setItem('reports', JSON.stringify(existingReports));
-    navigation.navigate('ListScreen', { reports: existingReports });
+    setReports(existingReports);
   };
+
+  React.useEffect(() => {
+    if (reports?.length) {
+      setModalVisible(!modalVisible)
+    }
+  }, [reports]);
 
   return (
     <View style={styles.container}>
@@ -111,6 +121,27 @@ export default function ViewImageScreen(props: any) {
           onPress={_onSubmitReport}>Crear Reporte
         </Button>
       </View>}
+
+      <Modal style={{ margin: 0 }} isVisible={modalVisible} coverScreen={true} backdropColor={colors?.darkBlue}>
+        <View style={styles.modalContainer}>
+          <View style={styles.logoImage}>
+            <Image style={{ width: 100, height: 100, }} source={require('../assets/images/involve_logo.png')} />
+          </View>
+
+          <Text style={styles.headerText}>¡Gracias por tu aporte!</Text>
+
+          <Text style={styles.descriptionText}>¿Sabías que? Por cada árbol que siembras garantizas agua para 3 personas...</Text>
+
+          <View style={styles.dismissButton}>
+            <TouchableOpacity>
+              <Text style={styles.dismissText} onPress={() => {
+                setModalVisible(!modalVisible)
+                navigation.navigate('ListScreen', { reports });
+              }}>Entendido</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -158,4 +189,48 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 10
   },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  dismissButton: {
+    backgroundColor: colors.darkBlue,
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 25,
+    paddingHorizontal: 35,
+    paddingVertical: 17,
+    borderRadius: 15,
+    borderColor: colors.lightGreen,
+    borderWidth: 2,
+  },
+  dismissText: {
+    color: 'white',
+    fontSize: 18
+  },
+  headerText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 35,
+    fontWeight: '700',
+    margin: 25
+  },
+  descriptionText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 25,
+    fontWeight: '500',
+    marginHorizontal: 20,
+    marginTop: 20
+  },
+  logoImage: {
+    marginTop: 20,
+    height: 150,
+    width: 150,
+    alignSelf: 'center',
+    padding: 25,
+    borderRadius: 100,
+    borderColor: colors.lightGreen,
+    borderWidth: 3
+  }
 });
