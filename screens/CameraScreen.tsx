@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import ViewShot from "react-native-view-shot";
 import DraggableImage from '../components/DraggableImage';
+import Modal from 'react-native-modal';
+import { colors } from '../utils/colors';
 
 export default function CameraScreen(props: any) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -13,6 +15,7 @@ export default function CameraScreen(props: any) {
   const [category, setCategory] = useState(null);
   const [itemsSource, setItemsSource] = useState([]);
   const [photoData, setPhoto] = useState(null);
+  const [modalVisible, setModalVisible] = React.useState(true);
   let camera: any = useRef();
   let viewShot: any = useRef();
   const navigation = useNavigation();
@@ -115,6 +118,38 @@ export default function CameraScreen(props: any) {
         }
 
       </ViewShot>
+
+      <Modal style={{ margin: 0 }} isVisible={modalVisible} coverScreen={true} backdropColor={colors?.darkBlue}>
+        <View style={styles.modalContainer}>
+          <View style={styles.logoImage}>
+            <Image style={{ width: 100, height: 100, }} source={require('../assets/images/involve_logo.png')} />
+          </View>
+
+          <Text style={styles.headerText}>¡Plasma tu idea!</Text>
+
+          <Text style={styles.descriptionText}>1. Selecciona la imagen</Text>
+
+          <Text style={styles.descriptionText}>2. Presiona repetidamente la imagen para agrandarla</Text>
+
+          <Text style={styles.descriptionText}>3. Presiona por unos segundos la imagen para eliminarla</Text>
+
+          <View style={styles.modalOptionsContent} pointerEvents='none' >
+            {
+              itemsSource?.map((buttonItem, index) =>
+                <TouchableOpacity key={index} style={styles.itemContent} onPress={() => { addNewItem(buttonItem) }}>
+                  <Image style={{ width: 50, height: 50 }} source={buttonItem.source} />
+                </TouchableOpacity>
+              )
+            }
+          </View>
+
+          <View style={styles.dismissButton}>
+            <TouchableOpacity >
+              <Text style={styles.dismissText} onPress={() => { setModalVisible(!modalVisible) }}>Entendido</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View >
   );
 }
@@ -164,5 +199,65 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'stretch',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  modalOptionsContent: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    right: 0,
+    top: (Dimensions.get('window').height / 2) - 85
+  },
+  dismissButton: {
+    backgroundColor: colors.darkBlue,
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 25,
+    paddingHorizontal: 35,
+    paddingVertical: 17,
+    borderRadius: 15,
+    borderColor: colors.lightGreen,
+    borderWidth: 2,
+  },
+  dismissText: {
+    color: 'white',
+    fontSize: 18
+  },
+  headerText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 35,
+    fontWeight: '700',
+    margin: 25
+  },
+  descriptionText: {
+    textAlign: 'left',
+    color: 'white',
+    fontSize: 25,
+    fontWeight: '500',
+    marginRight: 100,
+    marginLeft: 20,
+    marginTop: 20
+  },
+  fab: {
+    alignSelf: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    padding: 5,
+    marginTop: 40,
+  },
+  logoImage: {
+    backgroundColor: 'white',
+    marginTop: 20,
+    height: 150,
+    width: 150,
+    alignSelf: 'center',
+    padding: 25,
+    borderRadius: 100,
+    borderColor: colors.lightGreen,
+    borderWidth: 3
   }
 });
