@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FAB, Portal, Provider } from 'react-native-paper';
 import { colors } from '../utils/colors';
 
-const FabButton = (props) => {
+const FabButton = (props: any) => {
   const [state, setState] = React.useState({ open: false });
 
   const onStateChange = ({ open }) => setState({ open });
@@ -12,6 +12,7 @@ const FabButton = (props) => {
 
   return (
     <Provider>
+      {props.children}
       <Portal>
         <FAB.Group
           open={open}
@@ -24,7 +25,7 @@ const FabButton = (props) => {
             }
           }}
           color={colors.darkBlue}
-          fabStyle={{backgroundColor: colors.lightGreen}}
+          fabStyle={{ backgroundColor: colors.lightGreen }}
         />
       </Portal>
     </Provider>

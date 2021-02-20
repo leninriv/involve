@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, ScrollView, Image, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import Header from '../components/Header';
 import FabButton from '../components/FabButton';
@@ -73,18 +73,18 @@ export default function ListScreen(props: any) {
     return (
         <View style={styles.container}>
             <Header title='Mis Reportes' showBack={false} />
+            <FabButton actions={actions} >
+                <ScrollView style={{ flex: 1  }}>
+                    {
+                        !!reports && reports.length > 0 ?
+                            reports.map((report, index) => <ReportItem key={index} report={report} onPress={() => { _viewReport(report) }} />)
+                            :
+                            <EmptyListMessage />
+                    }
+                    <View style={{ height: 20, flex: 1 }} />
 
-            <ScrollView style={{ flex: 1 }}>
-                {
-                    !!reports && reports.length > 0 ?
-                        reports.map((report, index) => <ReportItem key={index} report={report} onPress={() => { _viewReport(report) }} />)
-                        :
-                        <EmptyListMessage />
-                }
-                <View style={{ height: 20 }} />
-            </ScrollView>
-
-            <FabButton actions={actions} />
+                </ScrollView>
+            </FabButton>
 
             <Modal style={{ margin: 0 }} isVisible={modalVisible} coverScreen={true} backdropColor={colors?.darkBlue}>
                 <View style={styles.modalContainer}>
@@ -114,7 +114,7 @@ export default function ListScreen(props: any) {
                     </View>
                 </View>
             </Modal>
-        </View>
+        </View >
     );
 }
 
